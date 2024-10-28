@@ -1,6 +1,17 @@
 from times import time_range, compute_overlap_time
 import pytest
 
+in_and_out = [((time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00"), time_range("2010-01-12 10:30:00", "2010-01-12 10:45:00", 2, 60)),
+              [('2010-01-12 10:30:00', '2010-01-12 10:37:00'), ('2010-01-12 10:38:00', '2010-01-12 10:45:00')]),
+              ((time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00"), time_range("2010-01-12 12:30:00", "2010-01-12 12:45:00")), []),
+              ((time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00", 2, 30), time_range("2010-01-12 11:00:00", "2010-01-12 13:00:00", 2, 10)), [("2010-01-12 11:00:15", "2010-01-12 11:59:55")]),
+              ((time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00"),time_range("2010-01-12 12:00:00", "2010-01-12 12:45:00") ), [])]
+
+
+@pytest.mark.parametrize("test_input,expected", in_and_out)
+def test_compute_overlap_time(test_input, expected):
+    assert compute_overlap_time(*test_input) == expected
+
 
 def test_given_input():
     large = time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00")
